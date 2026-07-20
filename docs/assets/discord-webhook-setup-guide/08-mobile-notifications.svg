@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">スマートフォン通知設定の確認例</title>
+  <desc id="desc">スマートフォン本体とDiscordアプリの通知が許可されていることを確認する画面例。</desc>
+  <rect width="1120" height="700" fill="#f4f6fb"/>
+  <rect x="230" y="55" width="285" height="590" rx="42" fill="#111827"/>
+  <rect x="252" y="92" width="241" height="515" rx="24" fill="#ffffff"/>
+  <text x="285" y="145" fill="#111827" font-family="Arial, sans-serif" font-size="22" font-weight="700">通知</text>
+  <rect x="278" y="188" width="190" height="56" rx="12" fill="#f1f5f9"/>
+  <circle cx="305" cy="216" r="15" fill="#5865f2"/>
+  <text x="330" y="222" fill="#111827" font-family="Arial, sans-serif" font-size="17" font-weight="700">Discord</text>
+  <text x="278" y="304" fill="#111827" font-family="Arial, sans-serif" font-size="17">通知を許可</text>
+  <rect x="390" y="284" width="64" height="34" rx="17" fill="#22c55e"/>
+  <circle cx="437" cy="301" r="13" fill="#ffffff"/>
+  <text x="278" y="370" fill="#64748b" font-family="Arial, sans-serif" font-size="15">ロック画面</text>
+  <text x="278" y="410" fill="#64748b" font-family="Arial, sans-serif" font-size="15">通知センター</text>
+  <text x="278" y="450" fill="#64748b" font-family="Arial, sans-serif" font-size="15">バナー</text>
+  <rect x="600" y="90" width="330" height="520" rx="18" fill="#ffffff" stroke="#dfe3ea"/>
+  <text x="645" y="155" fill="#111827" font-family="Arial, sans-serif" font-size="25" font-weight="700">確認する設定</text>
+  <rect x="645" y="205" width="240" height="54" rx="10" fill="#eef2ff"/>
+  <text x="670" y="239" fill="#3730a3" font-family="Arial, sans-serif" font-size="17" font-weight="700">本体通知がON</text>
+  <rect x="645" y="285" width="240" height="54" rx="10" fill="#eef2ff"/>
+  <text x="670" y="319" fill="#3730a3" font-family="Arial, sans-serif" font-size="17" font-weight="700">Discord通知がON</text>
+  <rect x="645" y="365" width="240" height="54" rx="10" fill="#eef2ff"/>
+  <text x="670" y="399" fill="#3730a3" font-family="Arial, sans-serif" font-size="17" font-weight="700">チャンネルをミュートしない</text>
+  <rect x="645" y="445" width="240" height="54" rx="10" fill="#eef2ff"/>
+  <text x="670" y="479" fill="#3730a3" font-family="Arial, sans-serif" font-size="17" font-weight="700">すべてのメッセージ</text>
+</svg>

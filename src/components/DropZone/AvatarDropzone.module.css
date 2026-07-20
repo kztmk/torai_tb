@@ -1,0 +1,63 @@
+/* AvatarDropzone.module.css */
+.root {
+  .dropzone {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 3px dashed #eeeeee;
+    background-color: #fafafa;
+    color: #bdbdbd;
+    transition: border-color 0.3s ease-in-out;
+    position: relative;
+    margin-bottom: 8px;
+
+    &[data-loading] {
+      background-color: #2196f3;
+      border-color: #2196f3;
+    }
+
+    &[data-accept] {
+      background-color: #00e676;
+      border-color: #00e676;
+    }
+
+    &[data-reject] {
+      background-color: #f44336;
+      border-color: #f44336;
+    }
+
+    &[data-idle] {
+      background-color: #f0f0f0;
+      border-color: #bdbdbd;
+    }
+  }
+
+  .fileDrop {
+    display: flex;
+    background: transparent;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    position: absolute;
+    color: #bdbdbd;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition:
+      opacity 0.3s,
+      background-color 0.3s;
+  }
+
+  .fileDrop:hover {
+    opacity: 1;
+    background-color: rgba(36, 39, 59, 0.575);
+  }
+}

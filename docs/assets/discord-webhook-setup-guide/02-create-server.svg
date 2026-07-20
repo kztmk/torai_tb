@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">Discordサーバー作成画面の例</title>
+  <desc id="desc">左側のプラスボタンからオリジナルの作成を選び、通知用サーバーを作る画面例。</desc>
+  <rect width="1120" height="700" fill="#eef1f7"/>
+  <rect x="60" y="55" width="1000" height="590" rx="16" fill="#313338"/>
+  <rect x="60" y="55" width="88" height="590" rx="16" fill="#1e1f22"/>
+  <circle cx="104" cy="117" r="28" fill="#5865f2"/>
+  <circle cx="104" cy="190" r="28" fill="#3ba55d"/>
+  <text x="93" y="200" fill="#ffffff" font-family="Arial, sans-serif" font-size="34" font-weight="700">+</text>
+  <rect x="315" y="115" width="490" height="470" rx="18" fill="#ffffff"/>
+  <text x="390" y="180" fill="#23272a" font-family="Arial, sans-serif" font-size="30" font-weight="700">サーバーを作成</text>
+  <rect x="380" y="230" width="360" height="82" rx="12" fill="#f2f3f5" stroke="#d5d8de"/>
+  <text x="420" y="282" fill="#23272a" font-family="Arial, sans-serif" font-size="22" font-weight="700">オリジナルの作成</text>
+  <rect x="380" y="346" width="360" height="54" rx="8" fill="#ffffff" stroke="#b9bbbe"/>
+  <text x="405" y="381" fill="#6b6f76" font-family="Arial, sans-serif" font-size="18">虎威 通知</text>
+  <rect x="500" y="460" width="150" height="48" rx="8" fill="#5865f2"/>
+  <text x="536" y="491" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">新規作成</text>
+  <path d="M145 190h150" stroke="#3ba55d" stroke-width="5" stroke-linecap="round"/>
+  <text x="170" y="225" fill="#ffffff" font-family="Arial, sans-serif" font-size="18">左側の + を押す</text>
+</svg>

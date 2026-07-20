@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">Discordトップ画面の例</title>
+  <desc id="desc">Discordのトップ画面でログインまたはブラウザで開くボタンを選ぶ画面例。</desc>
+  <rect width="1120" height="700" fill="#f4f6fb"/>
+  <rect x="80" y="70" width="960" height="560" rx="18" fill="#5865f2"/>
+  <circle cx="168" cy="145" r="22" fill="#ffffff"/>
+  <text x="204" y="153" fill="#ffffff" font-family="Arial, sans-serif" font-size="28" font-weight="700">Discord</text>
+  <rect x="790" y="116" width="132" height="44" rx="22" fill="#ffffff"/>
+  <text x="831" y="145" fill="#23272a" font-family="Arial, sans-serif" font-size="18" font-weight="700">ログイン</text>
+  <text x="150" y="278" fill="#ffffff" font-family="Arial, sans-serif" font-size="42" font-weight="700">Discordを開く</text>
+  <text x="150" y="334" fill="#eef1ff" font-family="Arial, sans-serif" font-size="24">アカウント作成、またはログインに進みます。</text>
+  <rect x="150" y="390" width="300" height="58" rx="29" fill="#ffffff"/>
+  <text x="196" y="427" fill="#23272a" font-family="Arial, sans-serif" font-size="20" font-weight="700">ブラウザでDiscordを開く</text>
+  <rect x="650" y="255" width="260" height="260" rx="48" fill="#ffffff" opacity=".14"/>
+  <rect x="706" y="315" width="148" height="92" rx="32" fill="#ffffff"/>
+  <circle cx="752" cy="362" r="12" fill="#5865f2"/>
+  <circle cx="808" cy="362" r="12" fill="#5865f2"/>
+  <path d="M732 416c32 20 64 20 96 0" fill="none" stroke="#5865f2" stroke-width="14" stroke-linecap="round"/>
+</svg>

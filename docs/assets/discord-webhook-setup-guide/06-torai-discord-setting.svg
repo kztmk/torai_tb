@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">虎威APIキー画面でDiscord通知を設定する例</title>
+  <desc id="desc">虎威のプロフィール内APIキー画面でDiscord通知をオンにし、Webhook URLを入力してテスト送信する画面例。</desc>
+  <rect width="1120" height="700" fill="#f7f8fb"/>
+  <rect x="85" y="60" width="950" height="580" rx="12" fill="#ffffff" stroke="#dfe3ea"/>
+  <text x="135" y="125" fill="#1f2937" font-family="Arial, sans-serif" font-size="30" font-weight="700">プロフィール / APIキー</text>
+  <rect x="135" y="165" width="850" height="58" rx="8" fill="#e9f8ee" stroke="#b8e5c7"/>
+  <text x="160" y="201" fill="#176c36" font-family="Arial, sans-serif" font-size="18" font-weight="700">GAS本人確認は完了済みです。</text>
+  <text x="135" y="275" fill="#1f2937" font-family="Arial, sans-serif" font-size="19" font-weight="700">Discordにポスト結果を送信</text>
+  <rect x="450" y="253" width="76" height="38" rx="19" fill="#2563eb"/>
+  <circle cx="507" cy="272" r="15" fill="#ffffff"/>
+  <text x="135" y="350" fill="#1f2937" font-family="Arial, sans-serif" font-size="18" font-weight="700">Discord Webhook URL</text>
+  <rect x="135" y="372" width="640" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="160" y="405" fill="#64748b" font-family="Arial, sans-serif" font-size="17">https://discord.com/api/webhooks/...</text>
+  <rect x="795" y="372" width="135" height="52" rx="8" fill="#ffffff" stroke="#2563eb"/>
+  <text x="827" y="405" fill="#2563eb" font-family="Arial, sans-serif" font-size="17" font-weight="700">テスト送信</text>
+  <text x="135" y="455" fill="#64748b" font-family="Arial, sans-serif" font-size="15">保存後、Webhook URLは再表示されません。</text>
+  <rect x="135" y="510" width="140" height="52" rx="8" fill="#2563eb"/>
+  <text x="188" y="543" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">保存</text>
+</svg>

@@ -1,0 +1,80 @@
+[
+  {
+    "id": "half_yearly_bank",
+    "name": "6ヶ月プラン-銀行振込",
+    "description": "半年間のご利用プランの支払い方法が銀行振込みとなります。事務手数料が追加で必要です。",
+    "priceDisplay": "￥6,800 + 事務手数料",
+    "amount": 6800,
+    "features": ["全ての機能へのアクセス", "メールサポート"],
+    "isCurrent": true,
+    "isRecommended": false,
+    "payment_method": "bank",
+    "display": true
+  },
+  {
+    "id": "lifetime",
+    "name": "生涯プラン",
+    "priceDisplay": "お支払い済み",
+    "description": "これまでにサービスをご利用いただいた既存ユーザー様向けの特別なプランです。",
+    "features": ["全機能無制限アクセス", "永続的な利用権"],
+    "payment_method": "internal",
+    "isRecommended": false,
+    "display": false
+  },
+  {
+    "id": "basic_monthly",
+    "name": "1ヶ月プラン",
+    "description": "1ヶ月間のご利用プランです。",
+    "priceDisplay": "¥1280/月",
+    "amount": 1280,
+    "features": ["全ての機能へのアクセス", "メールサポート", "オープン記念特価"],
+    "isCurrent": true,
+    "isRecommended": false,
+    "payment_method": "stripe",
+    "display": true
+  },
+  {
+    "id": "tri_monthly",
+    "name": "3ヶ月プラン",
+    "description": "3ヶ月間のご利用プランです。少しお得になります。",
+    "priceDisplay": "¥3,600/3ヶ月",
+    "features": ["基本的な機能へのアクセス", "標準サポート"],
+    "isCurrent": true,
+    "isRecommended": false,
+    "payment_method": "stripe",
+    "display": false
+  },
+  {
+    "id": "half_yearly",
+    "name": "6ヶ月プラン",
+    "description": "半年間のご利用プランです。25%お得になります。",
+    "priceDisplay": "¥6,800/6ヶ月",
+    "features": ["全ての機能へのアクセス", "メールサポート", "月額換算 約:1,133円"],
+    "isCurrent": true,
+    "isRecommended": false,
+    "payment_method": "stripe",
+    "display": true
+  },
+  {
+    "id": "yearly",
+    "name": "1年プラン",
+    "description": "1年間のご利用プランです。もっとお得なプランです。",
+    "priceDisplay": "¥12,000/年",
+    "features": ["全ての機能へのアクセス", "メールサポート", "月額換算 1,000円", "最大割引"],
+    "isCurrent": true,
+    "isRecommended": true,
+    "payment_method": "stripe",
+    "display": true
+  },
+  {
+    "id": "double_yearly",
+    "name": "2年プラン",
+    "description": "2年間のご利用プランです。最もお得なプランです。",
+    "priceDisplay": "¥19,800/2年",
+    "features": [""],
+    "isCurrent": true,
+    "isRecommended": false,
+    "payment_method": "stripe",
+    "display": false
+  }
+]

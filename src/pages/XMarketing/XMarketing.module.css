@@ -1,0 +1,227 @@
+.page {
+  min-width: 0;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+.costs {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+}
+.globalCost {
+  width: 260px;
+  border: 1px solid var(--mantine-primary-color-5);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+}
+.accountCost {
+  width: 220px;
+  border-left: 1px solid var(--mantine-color-gray-3);
+  padding: 12px 16px;
+}
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: light-dark(white, var(--mantine-color-dark-7));
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+.summaryItem {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 16px 22px;
+  border-right: 1px solid var(--mantine-color-gray-3);
+}
+.summaryItem:last-child {
+  border-right: 0;
+}
+.iconBox {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  background: var(--mantine-color-palePurple-0);
+  color: var(--mantine-primary-color-6);
+}
+.trendChart {
+  margin-bottom: 16px;
+  padding-top: 8px;
+  overflow: hidden;
+  border: 1px solid var(--mantine-color-gray-2);
+  border-radius: 8px;
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+}
+.trendChartSvg {
+  display: block;
+}
+.chartGridLine {
+  stroke: light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  stroke-width: 1;
+}
+.chartAxisLabel {
+  fill: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
+  font-size: 11px;
+}
+.impressionLine {
+  fill: none;
+  stroke: var(--mantine-color-blue-6);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+.impressionPoint {
+  fill: var(--mantine-color-blue-6);
+  stroke: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+  stroke-width: 2;
+}
+.engagementBar {
+  fill: var(--mantine-primary-color-5);
+  opacity: 0.55;
+}
+.impressionLegend,
+.engagementLegend {
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--mantine-color-blue-6);
+}
+.engagementLegend {
+  height: 8px;
+  border-radius: 2px;
+  background: var(--mantine-primary-color-5);
+  opacity: 0.6;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(620px, 1fr) 350px;
+  gap: 16px;
+  align-items: start;
+}
+.list {
+  background: light-dark(white, var(--mantine-color-dark-7));
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.filters {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+}
+.row {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 42px 48px minmax(0, 1fr) 90px 74px;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 18px;
+  border: 0;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+.row:hover {
+  background: var(--mantine-color-palePurple-0);
+}
+.row[data-selected='true'] {
+  background: var(--mantine-color-palePurple-0);
+  box-shadow: inset 3px 0 var(--mantine-primary-color-6);
+}
+.detail {
+  position: sticky;
+  top: 76px;
+  background: light-dark(white, var(--mantine-color-dark-7));
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 8px;
+  padding: 20px;
+}
+.policy {
+  margin-top: 14px;
+  padding: 11px;
+  border: 1px solid var(--mantine-primary-color-3);
+  border-radius: 6px;
+  background: var(--mantine-color-palePurple-0);
+}
+.xAccountNotice {
+  margin-top: 14px;
+  padding: 10px 11px;
+  color: var(--mantine-color-yellow-9);
+  border: 1px solid var(--mantine-color-yellow-4);
+  border-radius: 6px;
+  background: var(--mantine-color-yellow-0);
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(210px, 1fr));
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+}
+.column {
+  min-width: 210px;
+  background: light-dark(white, var(--mantine-color-dark-7));
+  border: 1px solid var(--mantine-color-gray-3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.columnHeader {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--mantine-color-gray-3);
+  background: var(--mantine-color-palePurple-0);
+}
+.prospect {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+  background: transparent;
+  padding: 14px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+.prospect[data-selected='true'] {
+  box-shadow: inset 3px 0 var(--mantine-primary-color-6);
+  background: var(--mantine-color-palePurple-0);
+}
+@media (max-width: 1100px) {
+  .header {
+    flex-direction: column;
+  }
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+  .detail {
+    position: static;
+  }
+}
+@media (max-width: 760px) {
+  .costs {
+    width: 100%;
+    flex-direction: column;
+  }
+  .globalCost,
+  .accountCost {
+    width: 100%;
+  }
+  .summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .row {
+    grid-template-columns: 36px 40px minmax(0, 1fr) 60px;
+  }
+  .rowTime {
+    display: none;
+  }
+}

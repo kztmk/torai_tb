@@ -1,0 +1,30 @@
+rules_version = '2';
+// Craft rules based on data in your Firestore database
+// allow write: if firestore.get(
+//    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null &&
+        firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    match /user-data/{userId}/{allPaths=**} {
+      // 読み書きの権限を、リクエストを行っているユーザーのIDがパス内のuserIdと一致する場合に限定
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    match /message-attachments/{userId}/{allPaths=**} {
+      allow read, delete: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow create, update: if request.auth != null && (request.auth.uid == userId || isAdmin()) &&
+        request.resource.size < 10 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*');
+    }
+    // Rule for public images
+    match /public/images/{imageId} {
+      // Allow read access if the user is authenticated
+      allow read: if request.auth != null;
+      // Write access can be more restrictive depending on your needs
+      allow write: if request.auth != null;  // Adjust as necessary
+    }
+  }
+}

@@ -1,0 +1,78 @@
+.wrapper {
+  min-height: 900px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(@/assets/images/trai_1d.png);
+}
+
+.form {
+  border-right: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-7));
+  min-height: 900px;
+  max-width: 450px;
+  padding-top: 80px;
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    max-width: 100%;
+  }
+}
+
+.title {
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-family:
+    M PLUS 1p,
+    var(--mantine-font-family);
+}
+.linkText {
+  color: light-dark(var(--mantine-color-blue-6), var(--mantine-color-blue-4));
+  cursor: pointer;
+  transition: color 0.2s ease;
+  font-weight: 700;
+}
+
+.linkText:hover {
+  color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-3));
+  text-decoration: underline;
+}
+
+.googleButton {
+  /* ボーダー代わりのグラデーション */
+  background: linear-gradient(
+    45deg,
+    #ea4335 25%,
+    /* 赤 */ #34a853 25% 50%,
+    /* 緑 */ #4285f4 50% 75%,
+    /* 青 */ #fbbc05 75% /* 黄 */
+  );
+  padding: 3px; /* ボーダーの幅 */
+  border: none;
+  border-radius: 8px; /* 角丸 */
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 3rem;
+}
+
+/* ボタンの内側（コンテンツ部分） */
+.googleButton span {
+  display: block;
+  background: white; /* 背景色 */
+  padding: 4px 24px;
+  border-radius: 6px; /* 角丸調整 */
+  font-weight: bold;
+  color: #444;
+}
+
+.googleSigninBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem; /* ボタンとテキストの間隔 */
+}
+
+.signinImage {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin-bottom: 3rem;
+  border-radius: 8px;
+}

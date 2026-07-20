@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">Webhook URLコピー画面の例</title>
+  <desc id="desc">Webhook名と投稿先チャンネルを確認し、Webhook URLをコピーする画面例。</desc>
+  <rect width="1120" height="700" fill="#eef1f7"/>
+  <rect x="80" y="70" width="960" height="560" rx="16" fill="#313338"/>
+  <text x="145" y="140" fill="#ffffff" font-family="Arial, sans-serif" font-size="30" font-weight="700">Webhooks</text>
+  <rect x="145" y="190" width="830" height="350" rx="14" fill="#2b2d31" stroke="#4e5058"/>
+  <text x="185" y="250" fill="#ffffff" font-family="Arial, sans-serif" font-size="24" font-weight="700">虎威</text>
+  <text x="185" y="300" fill="#b5bac1" font-family="Arial, sans-serif" font-size="16">投稿先チャンネル</text>
+  <rect x="185" y="318" width="270" height="46" rx="8" fill="#1e1f22"/>
+  <text x="208" y="348" fill="#ffffff" font-family="Arial, sans-serif" font-size="17"># torai-notifications</text>
+  <text x="185" y="410" fill="#b5bac1" font-family="Arial, sans-serif" font-size="16">Webhook URL</text>
+  <rect x="185" y="428" width="520" height="48" rx="8" fill="#1e1f22"/>
+  <text x="210" y="458" fill="#b5bac1" font-family="Arial, sans-serif" font-size="16">https://discord.com/api/webhooks/...</text>
+  <rect x="725" y="428" width="200" height="48" rx="8" fill="#5865f2"/>
+  <text x="765" y="459" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">URLをコピー</text>
+  <rect x="610" y="505" width="315" height="24" rx="12" fill="#f0b232"/>
+  <text x="628" y="523" fill="#23272a" font-family="Arial, sans-serif" font-size="13" font-weight="700">URLは他人に共有しないでください</text>
+</svg>

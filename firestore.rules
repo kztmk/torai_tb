@@ -1,0 +1,191 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+        // Helper function to check if the authenticatied user is an admin.
+    // This function reads the 'isAdmin' field from the user's document.
+    function isAdmin() {
+      return request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    function isOwner(userId) {
+      return request.auth != null && request.auth.uid == userId;
+    }
+
+    function hasFirstMonthDiscount(data) {
+      return data.keys().hasAny(['firstMonthDiscount']);
+    }
+
+    function isValidInitialProtectedUserFields(data) {
+      return (!data.keys().hasAny(['isAdmin']) || data.isAdmin == false) &&
+        (!data.keys().hasAny(['subscriptionStatus']) || data.subscriptionStatus == 'inactive') &&
+        (!data.keys().hasAny(['bankPaymentInfo']) || data.bankPaymentInfo == null) &&
+        !data.keys().hasAny([
+          'appPlanId',
+          'planId',
+          'currentPeriodStart',
+          'currentPeriodEnd',
+          'cancelAtPeriodEnd',
+          'canceledAt',
+          'endedAt',
+          'stripeCustomerId',
+          'stripeSubscriptionId',
+          'stripePriceId',
+          'pendingPlanChange',
+          'referral',
+          'referralCredit',
+          'mailchimpPersistentTags'
+        ]);
+    }
+
+    function isValidPreferredLanguage(data) {
+      return !data.keys().hasAny(['preferredLanguage']) ||
+        data.preferredLanguage == 'ja' ||
+        data.preferredLanguage == 'en';
+    }
+
+    function isValidInitialEmailVerification(data) {
+      return !data.keys().hasAny(['emailVerified', 'emailVerifiedAt']) ||
+        (
+          data.get('emailVerified', false) == false &&
+          !data.keys().hasAny(['emailVerifiedAt'])
+        ) ||
+        (
+          request.auth.token.email_verified == true &&
+          data.emailVerified == true &&
+          (!data.keys().hasAny(['emailVerifiedAt']) || data.emailVerifiedAt == request.time)
+        );
+    }
+
+    function isValidInitialFirstMonthDiscount(data) {
+      return !hasFirstMonthDiscount(data) ||
+        (
+          data.firstMonthDiscount.get('status', null) == 'pending_terms' &&
+          data.firstMonthDiscount.get('currency', null) == 'jpy' &&
+          data.firstMonthDiscount.get('validDays', null) == 1 &&
+          data.firstMonthDiscount.get('source', null) == 'google_new_user' &&
+          !data.firstMonthDiscount.keys().hasAny([
+            'eligibleAt',
+            'expiresAt',
+            'redeemedAt',
+            'checkoutSessionId',
+            'couponId',
+            'promotionCodeId',
+            'amountOff',
+            'appliedPlanId'
+          ])
+        );
+    }
+
+    function isClientSafeUserUpdate() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+        'isAdmin',
+        'subscriptionStatus',
+        'appPlanId',
+        'planId',
+        'currentPeriodStart',
+        'currentPeriodEnd',
+        'cancelAtPeriodEnd',
+        'canceledAt',
+        'endedAt',
+        'stripeCustomerId',
+        'stripeSubscriptionId',
+        'stripePriceId',
+        'pendingPlanChange',
+        'bankPaymentInfo',
+        'firstMonthDiscount',
+        'referral',
+        'referralCredit',
+        'mailchimpPersistentTags'
+      ]) && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+          'emailVerified',
+          'emailVerifiedAt'
+        ]) ||
+        (
+          request.auth.token.email_verified == true &&
+          request.resource.data.emailVerified == true &&
+          (
+            !request.resource.data.keys().hasAny(['emailVerifiedAt']) ||
+            request.resource.data.emailVerifiedAt == request.time
+          )
+        )
+      ) && isValidPreferredLanguage(request.resource.data);
+    }
+
+    match /users/{userId} {
+      // 認証済みユーザーは自身のドキュメントを読み書き可能
+      // 管理者は任意のユーザーのドキュメントを読み取り可能
+      allow read: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      allow create: if isOwner(userId) &&
+        isValidInitialProtectedUserFields(request.resource.data) &&
+        isValidInitialFirstMonthDiscount(request.resource.data) &&
+        isValidInitialEmailVerification(request.resource.data) &&
+        isValidPreferredLanguage(request.resource.data);
+      allow update: if isOwner(userId) && isClientSafeUserUpdate();
+      allow delete: if false;
+      // 管理者によるユーザーデータの書き込みを許可する場合は、別途 allow write: if isAdmin(); を追加検討
+    }
+    match /bankTransferRequests/{requestId} {
+        allow read: if isAdmin();
+    }
+
+    match /discounts/{discountId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    match /supportMessageThreads/{threadId} {
+      allow read, write: if false;
+      match /messages/{messageId} {
+        allow read, write: if false;
+      }
+    }
+
+    match /broadcastMessages/{messageId} {
+      allow read, write: if false;
+      match /reads/{userId} {
+        allow read, write: if false;
+      }
+    }
+
+    match /referralCodes/{code} {
+      allow read, write: if false;
+    }
+
+    match /referralSummaries/{userId} {
+      allow read, write: if false;
+    }
+
+    match /referralRewards/{rewardId} {
+      allow read, write: if false;
+    }
+
+    match /referralQualifications/{qualificationId} {
+      allow read, write: if false;
+    }
+
+    match /referralMonthlyGrantUsage/{usageId} {
+      allow read, write: if false;
+    }
+
+    match /referralConfig/{configId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    match /freeToolUnlockKeys/{keyHash} {
+      allow read, write: if false;
+    }
+
+    match /freeToolUnlockKeyUsers/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+      allow write: if false;
+    }
+
+    match /XTrends/{trendId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+  }
+}

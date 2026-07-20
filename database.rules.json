@@ -1,0 +1,53 @@
+{
+  "rules": {
+    "public": {
+      "info": {
+        ".read": true,
+        ".write": false
+      }
+    },
+    "user-data": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        "settings": {
+          "chatGptApiKey": {
+            ".write": "$uid === auth.uid"
+          },
+          "geminiApiKey": {
+            ".write": "$uid === auth.uid"
+          },
+          "anthropicApiKey": {
+            ".write": "$uid === auth.uid"
+          },
+          "rakutenAppId": {
+            ".write": "$uid === auth.uid"
+          },
+          "amazonAccessKey": {
+            ".write": "$uid === auth.uid"
+          },
+          "amazonSecretKey": {
+            ".write": "$uid === auth.uid"
+          },
+          "dmmAffiliateId": {
+            ".write": "$uid === auth.uid"
+          },
+          "dmmApiId": {
+            ".write": "$uid === auth.uid"
+          },
+          "googleSheetUrl": {
+            ".write": "false"
+          },
+          "gasProxyInitializedAt": {
+            ".write": "false"
+          },
+          "$other": {
+            ".write": "$uid === auth.uid && $other !== 'googleSheetUrl' && $other !== 'gasProxyInitializedAt'"
+          }
+        },
+        "profile": {
+          ".write": "$uid === auth.uid"
+        }
+      }
+    }
+  }
+}

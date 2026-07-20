@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="700" viewBox="0 0 1120 700" role="img" aria-labelledby="title desc">
+  <title id="title">Discord連携サービス画面の例</title>
+  <desc id="desc">サーバー設定の連携サービスからWebhooksを開く画面例。</desc>
+  <rect width="1120" height="700" fill="#eef1f7"/>
+  <rect x="70" y="60" width="980" height="580" rx="16" fill="#313338"/>
+  <rect x="70" y="60" width="300" height="580" rx="16" fill="#2b2d31"/>
+  <text x="115" y="120" fill="#ffffff" font-family="Arial, sans-serif" font-size="24" font-weight="700">サーバー設定</text>
+  <text x="115" y="188" fill="#b5bac1" font-family="Arial, sans-serif" font-size="18">概要</text>
+  <text x="115" y="238" fill="#b5bac1" font-family="Arial, sans-serif" font-size="18">ロール</text>
+  <rect x="100" y="267" width="235" height="44" rx="8" fill="#404249"/>
+  <text x="115" y="296" fill="#ffffff" font-family="Arial, sans-serif" font-size="18" font-weight="700">連携サービス</text>
+  <text x="425" y="128" fill="#ffffff" font-family="Arial, sans-serif" font-size="30" font-weight="700">連携サービス</text>
+  <rect x="425" y="185" width="520" height="90" rx="12" fill="#2b2d31" stroke="#4e5058"/>
+  <text x="455" y="226" fill="#ffffff" font-family="Arial, sans-serif" font-size="22" font-weight="700">Webhooks</text>
+  <text x="455" y="254" fill="#b5bac1" font-family="Arial, sans-serif" font-size="16">外部サービスからチャンネルへ投稿します。</text>
+  <rect x="760" y="207" width="150" height="46" rx="8" fill="#5865f2"/>
+  <text x="805" y="237" fill="#ffffff" font-family="Arial, sans-serif" font-size="17" font-weight="700">開く</text>
+  <path d="M334 289h75" stroke="#5865f2" stroke-width="5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,9 @@
+一般的な支払い拒否 4000000000000002 card_declined generic_decline
+残高不足による支払い拒否 4000000000009995 card_declined insufficient_funds
+カードの紛失による支払い拒否 4000000000009987 card_declined lost_card
+盗難カードによる支払い拒否 4000000000009979 card_declined stolen_card
+期限切れのカードによる支払い拒否 4000000000000069 expired_card 適用外
+セキュリティーコードの誤りによる支払い拒否 4000000000000127 incorrect_cvc 適用外
+処理エラーによる支払い拒否 4000000000000119 processing_error 適用外
+番号の誤りによる支払い拒否 4242424242424241 incorrect_number 適用外
+利用頻度の上限を超過したことによる支払い拒否 4000000000006975

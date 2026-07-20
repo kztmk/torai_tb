@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- public/index.html または index.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=M+PLUS+1p:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script type="text/javascript">
+      function loadPicker() {
+        // gapi.load を使って picker API をロード
+        gapi.load('picker', { callback: onPickerApiLoad });
+      }
+      function onPickerApiLoad() {
+        // Picker API がロードされたことを示すフラグなどを設定 (任意)
+        console.log('Google Picker API loaded.');
+        window.googlePickerLoaded = true; // グローバル変数で管理する例
+        // 必要であれば、ロード完了を待っていた処理をここでトリガー
+        const event = new Event('google-picker-loaded');
+        window.dispatchEvent(event);
+      }
+    </script>
+    <!-- アプリケーションのバンドルスクリプトより前に配置するのが望ましい -->
+    <!-- 例: <script type="module" src="/src/main.tsx"></script> の前 -->
+    <script
+      async
+      defer
+      src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};loadPicker()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()"
+    ></script>
+    <title>虎威（Torai）</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,24 @@
+{{displayName}}様
+
+ありがとうございます。
+{{serviceName}} の銀行振込を確認し、{{planName}} を有効化しました。
+
+■承認内容
+
+　プラン: {{planName}}
+　申請種別: {{requestType}}
+　振込名義: {{transferName}}
+　確認金額: {{amount}} {{currency}}
+
+■ご利用期間
+
+　開始日: {{periodStartDate}}
+　終了日: {{periodEndDate}}
+
+終了日の10日前に、サブスクリプション継続のご案内をお送りします。
+
+ご不明な点がある場合は、下記サポートまでお問い合わせください。
+
+虎威サポート
+稲葉　和哉
+support@imakita3gyo.com
