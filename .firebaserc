@@ -1,8 +1,7 @@
 {
   "projects": {
-    "default": "dev-torai",
-    "dev": "torai-dev",
-    "prod": "torai-e0d8e",
-    "preview": "torai-preview"
+    "default": "tb-torai-preview",
+    "preview": "tb-torai-preview",
+    "prod": "tb-torai-prod"
   }
 }

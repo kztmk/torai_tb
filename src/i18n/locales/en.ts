@@ -1,7 +1,7 @@
 const en = {
   common: {
-    appName: 'Torai',
-    logoAlt: 'Torai logo',
+    appName: 'TB-Torai',
+    logoAlt: 'TB-Torai logo',
     japanese: 'Japanese',
     english: 'English',
     language: 'Language',

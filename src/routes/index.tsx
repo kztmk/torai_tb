@@ -41,9 +41,6 @@ const Activity = Loadable(lazy(() => import('@/pages/Activity')));
 const Dashboard = Loadable(lazy(() => import('@/pages/Dashboard')));
 const MessagesPage = Loadable(lazy(() => import('@/pages/Messages')));
 const ProfilePage = Loadable(lazy(() => import('@/pages/Profile')));
-const XAccountsList = Loadable(lazy(() => import('@/pages/XAccountsList')));
-const XMarketing = Loadable(lazy(() => import('@/pages/XMarketing')));
-const XPostsList = Loadable(lazy(() => import('@/pages/XPostsList')));
 const TermsPage = Loadable(lazy(() => import('@/pages/Terms/TermsPage')));
 
 // --- Auth Initializer Component ---
@@ -186,17 +183,6 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Activity />,
               },
-              {
-                path: 'x-accounts',
-                element: <XAccountsList />,
-              },
-              {
-                path: 'x-accounts/:xAccountId',
-                element: <XPostsList />,
-              },
-              { path: 'x-marketing/inbox', element: <XMarketing /> },
-              { path: 'x-marketing/crm', element: <XMarketing /> },
-              { path: 'x-marketing/analytics', element: <XMarketing /> },
             ],
           },
           {
