@@ -21,6 +21,8 @@
     "deploy:functions:dev": "firebase deploy --only functions -P default",
     "deploy:functions:preview": "firebase deploy --only functions -P preview",
     "deploy:functions:prod": "firebase deploy --only functions -P prod",
+    "deploy:proxy:preview": "firebase deploy --only functions:proxyToGas -P preview",
+    "deploy:proxy:prod": "firebase deploy --only functions:proxyToGas -P prod",
     "deploy:hosting:dev": "firebase deploy --only hosting -P default",
     "deploy:hosting:preview": "firebase deploy --only hosting -P preview",
     "deploy:hosting:prod": "firebase deploy --only hosting -P prod"

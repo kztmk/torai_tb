@@ -2,14 +2,11 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   IconBook2,
-  IconBrandX,
-  IconBrandXdeep,
   IconChartBar,
   IconExclamationCircle,
   IconLicense,
   IconList,
   IconListCheck,
-  IconMessageCircle,
   IconUserCircle,
   IconUserShield,
   IconX,
@@ -21,7 +18,6 @@ import { LinksGroup } from '@/components/Navigation/Links/';
 import UserProfileButton from '@/components/UserProfileButton';
 import { useAppSelector } from '@/hooks/rtkhooks';
 import { SidebarState } from '@/layouts/MainLayout/Sidebar/AppsLayout';
-import { XAccount } from '@/types/xAccounts';
 import classes from './Navigation.module.css';
 
 // メニュー項目の型を定義
@@ -48,7 +44,6 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
   const tablet_match = useMediaQuery('(max-width: 768px)');
   const { t } = useTranslation();
 
-  const xAccounts = useAppSelector((state) => state.xAccounts.xAccountList);
   const user = useAppSelector((state) => state.auth.user);
   const isAdmin = user.isAdmin;
 
@@ -57,28 +52,6 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
     label: t('navigation.admin'),
     icon: IconUserShield,
     links: [{ label: t('navigation.admin'), icon: IconListCheck, link: '/admin' }],
-  };
-
-  const xAccountLinks = {
-    label: 'X',
-    icon: IconBrandX,
-    link: '/dashboard/x-accounts',
-    links: xAccounts.map((xAccount: XAccount) => ({
-      label: `@${xAccount.id}`,
-      icon: IconBrandXdeep,
-      link: `/dashboard/x-accounts/${xAccount.id}`,
-    })),
-  };
-
-  const xMarketingLinks = {
-    label: t('navigation.xMarketing'),
-    icon: IconMessageCircle,
-    link: '/dashboard/x-marketing/inbox',
-    links: [
-      { label: t('navigation.inbox'), link: '/dashboard/x-marketing/inbox' },
-      { label: t('navigation.crm'), link: '/dashboard/x-marketing/crm' },
-      { label: t('navigation.analytics'), link: '/dashboard/x-marketing/analytics' },
-    ],
   };
 
   const mainMenu: MenuGroup[] = [
@@ -141,32 +114,6 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
     </Box>
   );
 
-  const snsLinks = () => (
-    <Box key="snsLinks" pl={0} mb={sidebarState === 'mini' ? 0 : 'md'}>
-      {sidebarState !== 'mini' && (
-        <Text tt="uppercase" size="xs" pl="md" fw={500} mb="sm" className={classes.linkHeader}>
-          SNS
-        </Text>
-      )}
-      <LinksGroup
-        key="xAccount"
-        {...xAccountLinks}
-        isMini={sidebarState === 'mini'}
-        closeSidebar={() => {
-          setTimeout(() => {
-            onClose();
-          }, 250);
-        }}
-      />
-      <LinksGroup
-        key="xMarketing"
-        {...xMarketingLinks}
-        isMini={sidebarState === 'mini'}
-        closeSidebar={() => setTimeout(() => onClose(), 250)}
-      />
-    </Box>
-  );
-
   const links = (menu: MenuGroup[]) =>
     menu.map((m) => (
       <Box key={m.title} pl={0} mb={sidebarState === 'mini' ? 0 : 'md'}>
@@ -217,7 +164,6 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
       <ScrollArea className={classes.links}>
         <div className={classes.linksInner} data-sidebar-state={sidebarState}>
           {links(mainMenu)}
-          {snsLinks()}
           {links(docsMenu)}
           {isAdmin && adminMenu()}
         </div>

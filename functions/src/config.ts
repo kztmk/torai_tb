@@ -29,12 +29,14 @@ export const PAYMENT_DEADLINE_DAYS = 7;
 
 export const allowedOrigins: string[] = [
   'http://localhost:5173',
-  'https://torai.try-try.com',
-  'https://torai-preview.web.app',
-  'https://torai-preview.firebaseapp.com',
-  'https://torai-preview.try-try.com',
-  'https://torai-e0d8e.web.app',
-  'https://torai-e0d8e.firebaseapp.com',
+  // preview: tb-torai-preview
+  'https://tb-torai-preview.web.app',
+  'https://tb-torai-preview.firebaseapp.com',
+  'https://tb-torai-preview.try-try.com', // preview カスタムドメイン
+  // production: tb-torai-prod
+  'https://tb-torai-prod.web.app',
+  'https://tb-torai-prod.firebaseapp.com',
+  'https://tb-torai.try-try.com', // production カスタムドメイン
 ];
 
 export const stripeSecretKey = defineSecret('STRIPE_SECRET_KEY');
@@ -44,11 +46,7 @@ export const adminNotificationEmailConfig = defineString('ADMIN_NOTIFICATION_EMA
   default: '',
 });
 export const mailchimpApiKey = defineSecret('MAILCHIMP_API_KEY');
-// mokumokuren（兄弟アプリ）側 Stripe の制限付きキー — 新規サブスク特典クーポンの発行に使用
-export const mokumokurenStripeKey = defineSecret('MOKUMOKUREN_STRIPE_KEY');
 export const mailchimpAudienceId = defineString('MAILCHIMP_AUDIENCE_ID');
-export const xApiKey = defineSecret('X_API_KEY');
-export const xApiKeySecret = defineSecret('X_API_KEY_SECRET');
 
 export const getAdminNotificationBcc = (): string[] => {
   const email = adminNotificationEmailConfig.value().trim();

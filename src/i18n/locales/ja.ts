@@ -1,7 +1,7 @@
 const ja = {
   common: {
-    appName: '虎威',
-    logoAlt: '虎威ロゴ',
+    appName: 'TB-Torai',
+    logoAlt: 'TB-Torai ロゴ',
     japanese: '日本語',
     english: 'English',
     language: '表示言語',
