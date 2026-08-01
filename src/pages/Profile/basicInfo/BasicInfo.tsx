@@ -218,7 +218,7 @@ function BasicInfo({ authUser }: BasicInfoProps) {
           if (isMountedRef.current) {
             notifications.show({
               title: t('profile.basic.unlock.issueFailed'),
-              message: issueError?.message || t('xMarketing.errors.tryAgain'),
+              message: issueError?.message || t('common.tryAgain'),
               color: 'red',
               icon: <IconX size="1rem" />,
             });

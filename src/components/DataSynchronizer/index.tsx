@@ -3,11 +3,13 @@ import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/rtkhooks';
-import { getTriggerStatus, setInitialized } from '@/store/reducers/apiControllerSlice';
-import { fetchXAccounts } from '@/store/reducers/xAccountsSlice';
-import { fetchXErrors } from '@/store/reducers/xErrorsSlice';
-import { fetchXPosted } from '@/store/reducers/xPostedSlice';
-import { fetchXPosts } from '@/store/reducers/xPostsSlice';
+import { fetchAccounts } from '@/store/reducers/accountsSlice';
+import {
+  getGasVersion,
+  getTriggerStatus,
+  setInitialized,
+} from '@/store/reducers/apiControllerSlice';
+import { fetchPostLists } from '@/store/reducers/postsSlice';
 
 const getSyncErrorMessage = (payload: unknown, fallbackMessage: string) => {
   if (typeof payload === 'string') {
@@ -95,44 +97,24 @@ const DataSynchronizer = () => {
       });
 
       try {
-        // XAccountListのデータを取得
-        const accountsAction = await dispatch(fetchXAccounts());
-        if (fetchXAccounts.rejected.match(accountsAction)) {
+        // Bluesky / Threads アカウントを取得
+        const accountsAction = await dispatch(fetchAccounts());
+        if (fetchAccounts.rejected.match(accountsAction)) {
           console.error('アカウントデータ同期エラー:', accountsAction.payload);
           throw new Error(
             getSyncErrorMessage(accountsAction.payload, t('sync.accountsFailed'))
           );
         }
 
-        // 投稿予定データを取得
-        const postsAction = await dispatch(fetchXPosts());
-        if (fetchXPosts.rejected.match(postsAction)) {
-          console.error('投稿データ同期エラー:', postsAction.payload);
-          throw new Error(
-            getSyncErrorMessage(postsAction.payload, t('sync.postsFailed'))
-          );
-        }
-
-        // 投稿済みデータを取得
-        const postedAction = await dispatch(fetchXPosted());
-        if (fetchXPosted.rejected.match(postedAction)) {
-          console.error('投稿済みデータ同期エラー:', postedAction.payload);
-          throw new Error(
-            getSyncErrorMessage(postedAction.payload, t('sync.postedFailed'))
-          );
-        }
-
-        // エラーデータを取得
-        const errorsAction = await dispatch(fetchXErrors());
-        if (fetchXErrors.rejected.match(errorsAction)) {
-          console.error('エラーデータ同期エラー:', errorsAction.payload);
-          throw new Error(
-            getSyncErrorMessage(errorsAction.payload, t('sync.errorsFailed'))
-          );
+        // 投稿一覧（Posts / Posted / Errors）を取得
+        const listsAction = await dispatch(fetchPostLists());
+        if (fetchPostLists.rejected.match(listsAction)) {
+          console.error('投稿データ同期エラー:', listsAction.payload);
+          throw new Error(getSyncErrorMessage(listsAction.payload, t('sync.postsFailed')));
         }
 
         // トリガーの状態を取得（自動投稿のトリガー）
-        const triggerAction = await dispatch(getTriggerStatus({ functionName: 'autoPostToX' }));
+        const triggerAction = await dispatch(getTriggerStatus({ functionName: 'autoPost' }));
         if (getTriggerStatus.rejected.match(triggerAction)) {
           console.error('トリガーステータス取得エラー:', triggerAction.payload);
           // トリガー取得は失敗しても同期処理は続行（重要度を下げる）
@@ -147,6 +129,10 @@ const DataSynchronizer = () => {
             autoClose: 5000,
           });
         }
+
+        // デプロイ済み GAS バージョンを取得（フッターの更新チェック用）。
+        // 失敗しても同期は続行する（バージョン表示が出ないだけ）。
+        dispatch(getGasVersion());
 
         // 同期完了をマーク
         dispatch(setInitialized());

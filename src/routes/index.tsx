@@ -38,6 +38,8 @@ const AuthForgotPassword = Loadable(lazy(() => import('@/pages/Auth/ForgotPasswo
 const EmailActionHandler = Loadable(lazy(() => import('@/pages/Auth/EmailActionHandler'))); // ★ 追加
 const AuthResetPassword = Loadable(lazy(() => import('@/pages/Auth/ResetPassword')));
 const Activity = Loadable(lazy(() => import('@/pages/Activity')));
+const AccountsPage = Loadable(lazy(() => import('@/pages/Accounts')));
+const PostsPage = Loadable(lazy(() => import('@/pages/Posts')));
 const Dashboard = Loadable(lazy(() => import('@/pages/Dashboard')));
 const MessagesPage = Loadable(lazy(() => import('@/pages/Messages')));
 const ProfilePage = Loadable(lazy(() => import('@/pages/Profile')));
@@ -182,6 +184,18 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <Activity />,
+              },
+              {
+                path: 'accounts',
+                element: <AccountsPage />,
+              },
+              {
+                path: 'accounts/:platform',
+                element: <AccountsPage />,
+              },
+              {
+                path: 'posts/:platform/:accountId',
+                element: <PostsPage />,
               },
             ],
           },

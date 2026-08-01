@@ -3,6 +3,7 @@
  * アプリケーション全体の状態管理を行う
  */
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import accounts from './reducers/accountsSlice';
 import admin from './reducers/admin/adminSlice';
 import adminSubscriptions from './reducers/adminSubscriptionsSlice';
 import apiController from './reducers/apiControllerSlice';
@@ -10,34 +11,24 @@ import auth from './reducers/auth';
 import generatedPosts from './reducers/generatedPostsSlice';
 import googleAccessTokenState from './reducers/googleAccessTokenSlice';
 import messages from './reducers/messagesSlice';
+import posts from './reducers/postsSlice';
 import referrals from './reducers/referralsSlice';
 import subscriptionReducer from './reducers/subscriptionSlice';
 import systemAnnouncements from './reducers/systemAnnouncementSlice';
-import xAccounts from './reducers/xAccountsSlice';
-import xErrors from './reducers/xErrorsSlice';
-import xPosted from './reducers/xPostedSlice';
-import xPosts from './reducers/xPostsSlice';
-import xTrend from './reducers/xTrendSlice';
-import xMarketing from './reducers/xMarketingSlice';
 
 /**
  * 全てのリデューサーを統合したルートリデューサー
  * - auth: 認証情報の管理
- * - xAccounts: Xアカウント情報のCRUD管理
- * - xPosts: X投稿データのCRUD管理
- * - xPosted: X投稿済みデータの取得管理
+ * - accounts: Bluesky/Threads アカウント管理
+ * - posts: 投稿（Posts/Posted/Errors）管理
  */
 const rootReducer = combineReducers({
   auth,
-  xAccounts,
-  xPosts,
-  xPosted,
-  xErrors,
+  accounts,
+  posts,
   apiController,
   googleAccessTokenState,
   systemAnnouncements,
-  xTrend,
-  xMarketing,
   generatedPosts,
   messages,
   referrals,

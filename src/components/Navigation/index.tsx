@@ -1,7 +1,10 @@
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
+  IconAt,
   IconBook2,
+  IconBrandBluesky,
+  IconBrandThreads,
   IconChartBar,
   IconExclamationCircle,
   IconLicense,
@@ -45,6 +48,8 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
   const { t } = useTranslation();
 
   const user = useAppSelector((state) => state.auth.user);
+  const bluesky = useAppSelector((state) => state.accounts.bluesky);
+  const threads = useAppSelector((state) => state.accounts.threads);
   const isAdmin = user.isAdmin;
 
   // admin メニュー
@@ -63,6 +68,29 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
       ],
     },
   ];
+
+  // SNS（Bluesky / Threads）ツリー。親 = アカウント管理、枝 = 各アカウントの投稿画面。
+  const blueskyLinks = {
+    label: 'Bluesky',
+    icon: IconBrandBluesky,
+    link: '/dashboard/accounts/bluesky',
+    links: bluesky.map((a) => ({
+      label: a.displayName || `@${a.accountId}`,
+      icon: IconAt,
+      link: `/dashboard/posts/bluesky/${a.accountId}`,
+    })),
+  };
+
+  const threadsLinks = {
+    label: 'Threads',
+    icon: IconBrandThreads,
+    link: '/dashboard/accounts/threads',
+    links: threads.map((a) => ({
+      label: a.displayName || `@${a.accountId}`,
+      icon: IconAt,
+      link: `/dashboard/posts/threads/${a.accountId}`,
+    })),
+  };
 
   const docsMenu: MenuGroup[] = [
     {
@@ -110,6 +138,28 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
             onClose();
           }, 250);
         }}
+      />
+    </Box>
+  );
+
+  const snsLinks = () => (
+    <Box key="snsLinks" pl={0} mb={sidebarState === 'mini' ? 0 : 'md'}>
+      {sidebarState !== 'mini' && (
+        <Text tt="uppercase" size="xs" pl="md" fw={500} mb="sm" className={classes.linkHeader}>
+          SNS
+        </Text>
+      )}
+      <LinksGroup
+        key="bluesky"
+        {...blueskyLinks}
+        isMini={sidebarState === 'mini'}
+        closeSidebar={() => setTimeout(() => onClose(), 250)}
+      />
+      <LinksGroup
+        key="threads"
+        {...threadsLinks}
+        isMini={sidebarState === 'mini'}
+        closeSidebar={() => setTimeout(() => onClose(), 250)}
       />
     </Box>
   );
@@ -164,6 +214,7 @@ const Navigation = ({ onClose, onSidebarStateChange, sidebarState }: NavigationP
       <ScrollArea className={classes.links}>
         <div className={classes.linksInner} data-sidebar-state={sidebarState}>
           {links(mainMenu)}
+          {snsLinks()}
           {links(docsMenu)}
           {isAdmin && adminMenu()}
         </div>

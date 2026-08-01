@@ -78,7 +78,7 @@ export const saveApiKeys = createAsyncThunk<ApiKeyData, SaveApiKeysInput, { stat
         if (args.googleSheetUrl && normalizedSetupCode) {
           if (!GAS_SETUP_CODE_PATTERN.test(normalizedSetupCode)) {
             return thunkApi.rejectWithValue(
-              '本人確認コードの形式が正しくありません。Spreadsheetの「虎威連携」メニューで生成されたコードを入力してください。'
+              '本人確認コードの形式が正しくありません。Spreadsheetの「Autopost 連携」メニューで生成されたコードを入力してください。'
             );
           }
 
@@ -94,7 +94,7 @@ export const saveApiKeys = createAsyncThunk<ApiKeyData, SaveApiKeysInput, { stat
           gasProxyInitializedAt = initializeResult.data.initializedAt;
         } else if (args.googleSheetUrl && googleSheetUrlChanged) {
           return thunkApi.rejectWithValue(
-            'GAS WebアプリURLを変更する場合は、Spreadsheetの「虎威連携」メニューで本人確認コードを生成して入力してください。'
+            'GAS WebアプリURLを変更する場合は、Spreadsheetの「Autopost 連携」メニューで本人確認コードを生成して入力してください。'
           );
         } else if (!args.googleSheetUrl && googleSheetUrlChanged) {
           const clearGasProxyAuth = httpsCallable<unknown, ClearGasProxyAuthResponse>(

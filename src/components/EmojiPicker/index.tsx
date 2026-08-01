@@ -37,7 +37,7 @@ const EmojiPicker = forwardRef<EmojiPickerRef, EmojiPickerProps>(({ onSelectedEm
         arrowOffset={20}
         arrowSize={6}
         arrowRadius={1}
-        label={t('xPosts.form.addEmoji')}
+        label={t('common.addEmoji')}
         withArrow
         position="top-start"
       >

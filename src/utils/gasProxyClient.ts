@@ -8,7 +8,7 @@ export const GAS_PROXY_ENDPOINT = import.meta.env.VITE_PROXY_URL || '/api/gas-pr
  * アクセス権限が不足している場合に、ユーザーへ提示する共通メッセージ。
  */
 export const GAS_PERMISSION_ERROR_MESSAGE =
-  'シートやGoogleドライブへのアクセス権限がありません。スプレッドシートの「虎威連携」メニューから権限の設定（再承認）をやり直してください。';
+  'シートやGoogleドライブへのアクセス権限がありません。スプレッドシートの「Autopost 連携」メニューから権限の設定（再承認）をやり直してください。';
 
 /**
  * GAS から返るエラーメッセージが「権限関連」かどうかを判定する。

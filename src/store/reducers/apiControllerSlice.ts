@@ -39,6 +39,16 @@ interface ApiControllerState {
     interval: number;
     version: string;
   };
+  // エンゲージメント日次更新トリガー（GAS: updateAllEngagement）の状態。
+  // 投稿トリガー（autoPost）と triggerStatus を共用すると、状態取得のたびに
+  // ヘッダの自動投稿表示を上書きしてしまうため、専用スロットで持つ。
+  engagementStatus: {
+    isTriggerConfigured: boolean;
+    /** 一度でも GAS に問い合わせたか（未取得と OFF を区別するため） */
+    loaded: boolean;
+  };
+  // デプロイ済み GAS バックエンドのバージョン（appInfo エンドポイントから取得）。
+  gasVersion: string;
   uploadedMedia: {
     filename: string;
     fileId: string;
@@ -95,6 +105,11 @@ const initialState: ApiControllerState = {
     interval: -1,
     version: '',
   },
+  engagementStatus: {
+    isTriggerConfigured: false,
+    loaded: false,
+  },
+  gasVersion: '',
   uploadedMedia: {
     filename: '',
     fileId: '',
@@ -115,11 +130,9 @@ const initialState: ApiControllerState = {
 export const createTrigger = createAsyncThunk<
   {
     status: string;
-    message: string;
-    intervalMinutes: number;
-    handlerFunction: string;
+    functionName: string;
     triggerId: string;
-    deletedExistingCount: number;
+    intervalMinutes: number;
   },
   CreateTriggerParams,
   {
@@ -151,7 +164,8 @@ export const createTrigger = createAsyncThunk<
       return rejectWithValue(response.data.message || 'トリガーの作成に失敗しました');
     }
 
-    return response.data.data.data;
+    // GAS レスポンスは { status:'success', data: <実データ> }。他スライスと同じく 2 段で取り出す。
+    return response.data.data;
   } catch (error: any) {
     return rejectWithValue(
       error.response?.data?.message || error.message || 'トリガーの作成中にエラーが発生しました'
@@ -193,7 +207,7 @@ export const deleteTrigger = createAsyncThunk<
       return rejectWithValue(response.data.message || 'トリガーの削除に失敗しました');
     }
 
-    return response.data.data.data;
+    return response.data.data;
   } catch (error: any) {
     return rejectWithValue(
       error.response?.data?.message || error.message || 'トリガーの削除中にエラーが発生しました'
@@ -230,7 +244,7 @@ export const getTriggerStatus = createAsyncThunk<
     const response = await gasProxyPost(
       {},
       {
-        action: 'getStatus',
+        action: 'status',
         target: 'trigger',
         functionName: args.functionName,
       }
@@ -244,10 +258,179 @@ export const getTriggerStatus = createAsyncThunk<
         triggerResult?.message || response.data?.message || 'トリガー情報の取得に失敗しました'
       );
     }
-    return triggerResult?.data;
+    // triggerResult 自体が checkTriggerExists の戻り値（{ triggerFound, intervalMinutes, ... }）。
+    // さらに .data を掘ると undefined になり、UI がトリガーを検出できなくなる。
+    return triggerResult;
   } catch (error: any) {
     return rejectWithValue(
       error.response?.data?.message || error.message || 'トリガー情報の取得中にエラーが発生しました'
+    );
+  }
+});
+
+// GAS 側のエンゲージメント日次更新ハンドラ名（triggers.ts の ENGAGEMENT_HANDLER と一致させる）。
+export const ENGAGEMENT_HANDLER = 'updateAllEngagement';
+
+/**
+ * エンゲージメント日次更新トリガーの有無を取得する。
+ * GAS の checkTriggerExists は任意の functionName を受けるため、status アクションを流用する。
+ * 投稿トリガーの表示を壊さないよう、結果は engagementStatus にのみ反映する。
+ */
+export const getEngagementTriggerStatus = createAsyncThunk<
+  boolean,
+  void,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>('api/getEngagementTriggerStatus', async (_arg, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    if (!state.auth.user?.googleSheetUrl) {
+      return rejectWithValue('GoogleSheet URL が設定されていません');
+    }
+
+    const response = await gasProxyPost(
+      {},
+      {
+        action: 'status',
+        target: 'trigger',
+        functionName: ENGAGEMENT_HANDLER,
+      }
+    );
+
+    const result = response.data?.data;
+    if (response.data?.status === 'error' || result?.status === 'error') {
+      return rejectWithValue(
+        result?.message || response.data?.message || 'エンゲージメント更新設定の取得に失敗しました'
+      );
+    }
+    return Boolean(result?.triggerFound);
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data?.message ||
+        error.message ||
+        'エンゲージメント更新設定の取得中にエラーが発生しました'
+    );
+  }
+});
+
+/**
+ * エンゲージメント日次更新トリガーを有効化する（GAS: ensureEngagement）。
+ * GAS 側は everyDays(1) で作成するため、実行時刻は Google が決める。
+ * 反映は最大 24 時間後になる点をユーザーに案内すること。
+ */
+export const enableEngagementTrigger = createAsyncThunk<
+  void,
+  void,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>('api/enableEngagementTrigger', async (_arg, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    if (!state.auth.user?.googleSheetUrl) {
+      return rejectWithValue('GoogleSheet URL が設定されていません');
+    }
+
+    const response = await gasProxyPost(
+      {},
+      {
+        action: 'ensureEngagement',
+        target: 'trigger',
+      }
+    );
+
+    const result = response.data?.data;
+    if (response.data?.status === 'error' || result?.status === 'error') {
+      return rejectWithValue(
+        result?.message ||
+          response.data?.message ||
+          'エンゲージメント自動更新の有効化に失敗しました'
+      );
+    }
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data?.message ||
+        error.message ||
+        'エンゲージメント自動更新の有効化中にエラーが発生しました'
+    );
+  }
+});
+
+/** エンゲージメント日次更新トリガーを削除する（GAS: deleteEngagement）。 */
+export const disableEngagementTrigger = createAsyncThunk<
+  void,
+  void,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>('api/disableEngagementTrigger', async (_arg, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    if (!state.auth.user?.googleSheetUrl) {
+      return rejectWithValue('GoogleSheet URL が設定されていません');
+    }
+
+    const response = await gasProxyPost(
+      {},
+      {
+        action: 'deleteEngagement',
+        target: 'trigger',
+      }
+    );
+
+    if (response.data?.status === 'error') {
+      return rejectWithValue(
+        response.data?.message || 'エンゲージメント自動更新の停止に失敗しました'
+      );
+    }
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data?.message ||
+        error.message ||
+        'エンゲージメント自動更新の停止中にエラーが発生しました'
+    );
+  }
+});
+
+// デプロイ済み GAS バックエンドのバージョン取得（appInfo エンドポイント）。
+// フッターの更新チェック（GitHub 最新版との比較）に使用する。
+export const getGasVersion = createAsyncThunk<
+  string,
+  void,
+  {
+    state: RootState;
+    rejectValue: string;
+  }
+>('api/getGasVersion', async (_arg, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    const targetGasUrl = state.auth.user?.googleSheetUrl;
+    if (!targetGasUrl) {
+      return rejectWithValue('GoogleSheet URL が設定されていません');
+    }
+
+    const response = await gasProxyPost(
+      {},
+      {
+        action: 'get',
+        target: 'appInfo',
+      }
+    );
+
+    const result = response.data?.data;
+    if (response.data?.status === 'error' || result?.status === 'error') {
+      return rejectWithValue(
+        result?.message || response.data?.message || 'バージョン情報の取得に失敗しました'
+      );
+    }
+    return String(result?.version || '');
+  } catch (error: any) {
+    return rejectWithValue(
+      error.response?.data?.message || error.message || 'バージョン情報の取得中にエラーが発生しました'
     );
   }
 });
@@ -324,7 +507,7 @@ const apiControllerSlice = createSlice({
       })
       .addCase(createTrigger.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.triggerStatus.functionName = action.payload.handlerFunction;
+        state.triggerStatus.functionName = action.payload.functionName;
         state.triggerStatus.isTriggerConfigured = true;
         state.triggerStatus.interval = action.payload.intervalMinutes;
         state.error = null;
@@ -371,6 +554,29 @@ const apiControllerSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload as string;
       })
+      // エンゲージメント日次更新トリガー。
+      // 補助機能なので共有の status / error は触らず、engagementStatus だけを更新する
+      // （失敗時の案内は呼び出し側の通知で行う）。
+      .addCase(getEngagementTriggerStatus.fulfilled, (state, action) => {
+        state.engagementStatus.isTriggerConfigured = action.payload;
+        state.engagementStatus.loaded = true;
+      })
+      .addCase(getEngagementTriggerStatus.rejected, (state) => {
+        // 取得できなくても操作自体は行えるようにする（状態は既定の OFF 表示のまま）。
+        state.engagementStatus.loaded = true;
+      })
+      .addCase(enableEngagementTrigger.fulfilled, (state) => {
+        state.engagementStatus.isTriggerConfigured = true;
+        state.engagementStatus.loaded = true;
+      })
+      .addCase(disableEngagementTrigger.fulfilled, (state) => {
+        state.engagementStatus.isTriggerConfigured = false;
+        state.engagementStatus.loaded = true;
+      })
+      // getGasVersion（フッターの更新チェック用。失敗しても致命的ではない）
+      .addCase(getGasVersion.fulfilled, (state, action) => {
+        state.gasVersion = action.payload;
+      })
       // archiveSheet
       .addCase(archiveSheet.pending, (state) => {
         state.status = 'loading';
@@ -397,6 +603,7 @@ export const { clearApiErrors, clearUploadedMedia, clearArchivedSheet, setInitia
 export const selectApiStatus = (state: RootState) => state.apiController.status;
 export const selectApiError = (state: RootState) => state.apiController.error;
 export const selectTriggerStatus = (state: RootState) => state.apiController.triggerStatus;
+export const selectEngagementStatus = (state: RootState) => state.apiController.engagementStatus;
 export const selectArchivedSheet = (state: RootState) => state.apiController.archivedSheet;
 
 export default apiControllerSlice.reducer;

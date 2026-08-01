@@ -45,3 +45,5 @@ stats.html
 playwright-report/
 test-results/
 tests/operation/.auth/
+
+admin/

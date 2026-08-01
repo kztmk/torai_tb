@@ -1,26 +1,28 @@
 import { useEffect, useState } from 'react';
 import {
   Alert,
+  Anchor,
   Button,
   Group,
   LoadingOverlay,
   Paper,
   Stack,
   Switch,
+  Text,
   TextInput,
   Title,
 } from '@mantine/core';
+import { IconCopy, IconDownload } from '@tabler/icons-react';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks/rtkhooks';
 import { saveApiKeys } from '@/store/reducers/auth';
-import { fetchXAccounts, resetXAccountsState } from '@/store/reducers/xAccountsSlice';
-import { resetXErrorsState } from '@/store/reducers/xErrorsSlice';
-import { resetXPostedState } from '@/store/reducers/xPostedSlice';
-import { resetXPostsState } from '@/store/reducers/xPostsSlice';
+import { fetchAccounts, resetAccountsState } from '@/store/reducers/accountsSlice';
+import { resetPostsState } from '@/store/reducers/postsSlice';
 import { gasProxyPost, getGasResponseErrorMessage } from '@/utils/gasProxyClient';
 import { normalizeGeminiApiKey, validateGeminiApiKey } from '@/utils/geminiApiKey';
+import { useGasVersionStatus } from '@/hooks/useGasVersionStatus';
 
 interface FormValues {
   chatGptApiKey: string;
@@ -31,6 +33,17 @@ interface FormValues {
   discordPostResultNotificationEnabled: boolean;
   discordWebhookUrl: string;
 }
+
+// 公開リポジトリ kztmk/ts_autopost の Release から常に最新の code.js を取得する URL。
+// タグ push で publish-code-js ワークフローが Release にアセットを添付する。
+const GAS_LATEST_CODE_URL =
+  import.meta.env.VITE_GAS_LATEST_CODE_URL ||
+  'https://github.com/kztmk/ts_autopost/releases/latest/download/code.js';
+
+// テンプレートスプレッドシートの「コピーを作成」URL（.../copy）。
+// Google にサインイン済みのブラウザで開くと、そのままユーザーのドライブに複製できる。
+// 運営がテンプレ作成後に VITE_GAS_TEMPLATE_COPY_URL を設定する（未設定ならボタン非表示）。
+const GAS_TEMPLATE_COPY_URL = import.meta.env.VITE_GAS_TEMPLATE_COPY_URL || '';
 
 const GAS_SETUP_CODE_PATTERN = /^[0-9A-F]{8}-[0-9A-F]{8}-[0-9A-F]{8}$/i;
 const DISCORD_WEBHOOK_URL_PATTERN =
@@ -43,6 +56,7 @@ function ApiKeySettings() {
   const { loading, error, user, task } = useAppSelector((state) => state.auth);
   const { chatGptApiKey, geminiApiKey, anthropicApiKey, googleSheetUrl } = user;
   const dispatch = useAppDispatch();
+  const gasStatus = useGasVersionStatus();
   const [isEditingGasConnection, setIsEditingGasConnection] = useState(false);
   const [isTestingDiscordWebhook, setIsTestingDiscordWebhook] = useState(false);
   const [isTestingGeminiApiKey, setIsTestingGeminiApiKey] = useState(false);
@@ -127,15 +141,13 @@ function ApiKeySettings() {
     )
       .unwrap()
       .then(() => {
-        // シートURLが変わった場合は、旧シートのデータ（Xアカウント・投稿・
-        // 投稿済み・エラー）を破棄し、新しいシートのXアカウントを取得し直す。
+        // シートURLが変わった場合は、旧シートのデータ（アカウント・投稿・
+        // 投稿済み・エラー）を破棄し、新しいシートのアカウントを取得し直す。
         if (urlChanged) {
-          dispatch(resetXAccountsState());
-          dispatch(resetXPostsState());
-          dispatch(resetXPostedState());
-          dispatch(resetXErrorsState());
+          dispatch(resetAccountsState());
+          dispatch(resetPostsState());
           if (values.googleSheetUrl) {
-            dispatch(fetchXAccounts());
+            dispatch(fetchAccounts());
           }
         }
       })
@@ -265,6 +277,82 @@ function ApiKeySettings() {
       <LoadingOverlay visible={loading} zIndex={1000} overlayProps={{ radius: 'sm', blur: 2 }} />
       <Stack>
         <Title order={4}>{t('profile.tabs.apiKeys')}</Title>
+        {!isGasProxyInitialized && (
+          <Alert color="blue" variant="light" title={t('profile.api.setupTitle')}>
+            <Stack gap="sm">
+              <Text size="sm">{t('profile.api.setupStep1')}</Text>
+              {GAS_TEMPLATE_COPY_URL && (
+                <Button
+                  component="a"
+                  href={GAS_TEMPLATE_COPY_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  leftSection={<IconCopy size={16} />}
+                  w="fit-content"
+                >
+                  {t('profile.api.copyTemplate')}
+                </Button>
+              )}
+              <Text size="sm">{t('profile.api.setupStep2')}</Text>
+              <Anchor
+                href={GAS_LATEST_CODE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="xs"
+                c="dimmed"
+              >
+                <Group gap={4} align="center">
+                  <IconDownload size={14} />
+                  {t('profile.api.downloadGasScript')}
+                </Group>
+              </Anchor>
+            </Stack>
+          </Alert>
+        )}
+        {/* バックエンド(GAS)バージョン表示と最新版ダウンロードリンク（常時表示） */}
+        <Paper withBorder radius="md" p="sm">
+          <Stack gap="xs">
+            <Group justify="space-between" wrap="nowrap">
+              <Text fw={600} size="sm">
+                {t('profile.api.versionSectionTitle')}
+              </Text>
+              <Anchor
+                href={GAS_LATEST_CODE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                size="sm"
+              >
+                <Group gap={4} align="center" wrap="nowrap">
+                  <IconDownload size={14} />
+                  {t('profile.api.downloadLatest')}
+                </Group>
+              </Anchor>
+            </Group>
+            <Group gap="md">
+              <Text size="sm" c="dimmed">
+                {gasStatus.current
+                  ? t('profile.api.versionCurrent', { version: gasStatus.current })
+                  : t('profile.api.versionCurrentUnknown')}
+              </Text>
+              {gasStatus.latest && (
+                <Text size="sm" c="dimmed">
+                  {t('profile.api.versionLatest', { version: gasStatus.latest })}
+                </Text>
+              )}
+            </Group>
+            {gasStatus.current &&
+              gasStatus.latest &&
+              (gasStatus.outdated ? (
+                <Alert color="orange" variant="light">
+                  {t('profile.api.versionOutdated', { version: gasStatus.latest })}
+                </Alert>
+              ) : (
+                <Text size="xs" c="green">
+                  {t('profile.api.versionUpToDate')}
+                </Text>
+              ))}
+          </Stack>
+        </Paper>
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Group align="flex-end" gap="sm" wrap="nowrap">
             <TextInput
