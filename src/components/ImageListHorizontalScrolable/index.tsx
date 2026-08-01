@@ -1,14 +1,30 @@
 // ImageListHorizontalScrolable.tsx
 import React, { useEffect, useRef, useState } from 'react';
-import { IconChevronLeft, IconChevronRight, IconTrash } from '@tabler/icons-react';
+import {
+  IconArrowLeft,
+  IconArrowRight,
+  IconChevronLeft,
+  IconChevronRight,
+  IconTrash,
+} from '@tabler/icons-react';
 import { v4 as uuidv4 } from 'uuid';
-import { Box, Button, Image, Tooltip } from '@mantine/core';
+import { ActionIcon, Box, Button, Group, Image, Tooltip } from '@mantine/core';
 import { useTranslation } from 'react-i18next';
-import { MediaDataType } from '@/types/xAccounts';
+
+/** 画像サムネイル表示用の最小データ型（imgUrl と削除キーの fileName を持つ） */
+export type MediaThumbType = {
+  file?: File | null;
+  fileName: string;
+  fileId?: string;
+  imgUrl: string | null;
+  mimeType?: string;
+};
 
 interface ImageListHorizontalScrolableProps {
-  pics: MediaDataType[];
+  pics: MediaThumbType[];
   removeImage: (path: string) => void;
+  /** 指定時、各画像に並べ替えボタン（◀ ▶）を表示。dir: -1=前へ / 1=次へ */
+  moveImage?: (fileName: string, dir: -1 | 1) => void;
 }
 
 /**
@@ -40,6 +56,7 @@ interface ImageListHorizontalScrolableProps {
 const ImageListHorizontalScrolable: React.FC<ImageListHorizontalScrolableProps> = ({
   pics,
   removeImage,
+  moveImage,
 }) => {
   const { t } = useTranslation();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -115,7 +132,7 @@ const ImageListHorizontalScrolable: React.FC<ImageListHorizontalScrolableProps> 
           overflowX: 'auto',
         }}
       >
-        {pics.map((pic) => (
+        {pics.map((pic, idx) => (
           <Box key={uuidv4()} style={{ minWidth: '160px', height: '200px', position: 'relative' }}>
             <Image
               src={pic.imgUrl}
@@ -136,10 +153,40 @@ const ImageListHorizontalScrolable: React.FC<ImageListHorizontalScrolableProps> 
                 height: '50px',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'flex-end',
-                paddingRight: '10px',
+                justifyContent: 'space-between',
+                padding: '0 10px',
               }}
             >
+              <Group gap={4}>
+                {moveImage && (
+                  <>
+                    <Tooltip label={t('common.moveLeft')} withArrow>
+                      <ActionIcon
+                        size="sm"
+                        variant="filled"
+                        color="dark"
+                        disabled={idx === 0}
+                        onClick={() => moveImage(pic.fileName, -1)}
+                        aria-label="move left"
+                      >
+                        <IconArrowLeft size={14} />
+                      </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label={t('common.moveRight')} withArrow>
+                      <ActionIcon
+                        size="sm"
+                        variant="filled"
+                        color="dark"
+                        disabled={idx === pics.length - 1}
+                        onClick={() => moveImage(pic.fileName, 1)}
+                        aria-label="move right"
+                      >
+                        <IconArrowRight size={14} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </>
+                )}
+              </Group>
               <Tooltip label={t('common.delete')} withArrow>
                 <Button
                   size="xs"

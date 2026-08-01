@@ -8,18 +8,18 @@ type MailchimpTagStage =
   | 'cancelled';
 
 const MAILCHIMP_TAGS: Record<MailchimpTagStage, string> = {
-  registered: 'torai_regist',
-  agreed: 'torai_agreed',
-  bankRequested: 'torai_bank_requested',
-  bankPendingConfirmation: 'torai_bank_pending_confirmation',
-  subscribed: 'torai_subscribed',
-  subscribedBank: 'torai_subscribed_bank',
-  cancelled: 'torai_cancelled',
+  registered: 'tbtorai_regist',
+  agreed: 'tbtorai_agreed',
+  bankRequested: 'tbtorai_bank_requested',
+  bankPendingConfirmation: 'tbtorai_bank_pending_confirmation',
+  subscribed: 'tbtorai_subscribed',
+  subscribedBank: 'tbtorai_subscribed_bank',
+  cancelled: 'tbtorai_cancelled',
 };
 
 const isPreviewMode = () => import.meta.env.VITE_APP_MODE === 'preview';
 
 export const getMailchimpTag = (stage: MailchimpTagStage): string[] => {
   const tag = MAILCHIMP_TAGS[stage];
-  return [isPreviewMode() ? tag.replace('torai_', 'torai_preview_') : tag];
+  return [isPreviewMode() ? tag.replace('tbtorai_', 'tbtorai_preview_') : tag];
 };

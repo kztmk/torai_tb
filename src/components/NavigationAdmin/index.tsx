@@ -64,7 +64,6 @@ const NavigationAdmin = ({ onClose, onSidebarStateChange, sidebarState }: Naviga
       { label: t('navigation.adminSubscriptions'), icon: IconChartBar, link: '/admin/subscriptions' },
       { label: t('navigation.adminMessages'), icon: IconMessages, link: '/admin/messages' },
       { label: t('navigation.adminAccounts'), icon: IconSquareKey, link: '/admin/accounts-lock' },
-      { label: t('navigation.adminSamples'), icon: IconDatabaseImport, link: '/admin/x-marketing-samples' },
     ],
   };
 

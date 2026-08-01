@@ -13,7 +13,6 @@ const AdminMessages = Loadable(lazy(() => import('@/pages/Admin/AdminMessages'))
 const AdminSubscriptionDashboard = Loadable(
   lazy(() => import('@/pages/Admin/AdminSubscriptionDashboard'))
 );
-const AdminXMarketingSamples = Loadable(lazy(() => import('@/pages/Admin/AdminXMarketingSamples')));
 /**
  * 管理者ルート用のローダー関数
  * 認証状態と管理者権限をチェックします。
@@ -56,10 +55,6 @@ export const AdminRoutes = [
       {
         path: 'subscriptions',
         element: <AdminSubscriptionDashboard />,
-      },
-      {
-        path: 'x-marketing-samples',
-        element: <AdminXMarketingSamples />,
       },
       // 他の管理者用ルートをここに追加
     ],

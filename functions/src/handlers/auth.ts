@@ -411,7 +411,8 @@ export const acceptTerms = onCall<unknown, Promise<AcceptTermsResponse>>(
         userData?.preferredLanguage === undefined ||
         userData?.preferredLanguage === null ||
         userData?.preferredLanguage === 'ja';
-      isAdmin = Boolean(userData?.isAdmin);
+      // Firebase Admin のカスタムクレーム isAdmin も反映（Firestore の isAdmin と OR）。
+      isAdmin = Boolean(userData?.isAdmin) || request.auth?.token?.isAdmin === true;
       const nextMailchimpTags = getMailchimpTag('agreed');
       const shouldActivateFirstMonthDiscount =
         isJapaneseUser &&

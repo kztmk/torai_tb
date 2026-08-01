@@ -44,9 +44,10 @@ export const performUploadWorkflow = async ({
         currentToken = resultAction.payload.accessToken;
         console.log('New token obtained via initial check.');
       } else {
-        // 取得失敗
-        const errMsg = resultAction.payload ?? 'Google連携/認証に失敗しました。';
-        console.error('Failed to get initial Google token:', errMsg);
+        // 取得失敗（payload は { message } オブジェクトなので .message を取り出す）
+        const payload = resultAction.payload as { message?: string } | undefined;
+        const errMsg = payload?.message ?? resultAction.error?.message ?? 'Google連携/認証に失敗しました。';
+        console.error('Failed to get initial Google token:', resultAction.payload, resultAction.error);
         return { success: false, message: `Google認証エラー: ${errMsg}`, needsReauth: true }; // 再認証が必要
       }
     } catch (thunkError) {
@@ -58,7 +59,7 @@ export const performUploadWorkflow = async ({
   // ★ ここでターゲットフォルダ名を決定 ★
   const currentYear = dayjs().format('YYYY');
   const currentMonth = dayjs().format('MM');
-  const dynamicTargetFolderName = `X_Post_MediaFiles/${currentYear}/${currentMonth}`;
+  const dynamicTargetFolderName = `TB-Torai_MediaFiles/${currentYear}/${currentMonth}`;
 
   console.log(`Target folder for upload: ${dynamicTargetFolderName}`);
 

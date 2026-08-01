@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "Autopost Manual",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Autopost",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.目次": {
+    "message": "Contents",
+    "description": "Navbar item with label 目次"
+  }
+}

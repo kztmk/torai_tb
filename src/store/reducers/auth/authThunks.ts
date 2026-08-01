@@ -920,7 +920,23 @@ export const listenAuthState = () => {
               }
             : null;
           // storeにユーザーデータを保存
+          // Firebase Admin で付与したカスタムクレーム isAdmin を管理者判定に反映する
+          // （Firestore の userData.isAdmin と OR）。true 強制リフレッシュで、クレーム付与後は
+          // 再読み込みだけで反映される（onAuthStateChanged はトークン更新で再発火しないためループしない）。
+          let claimIsAdmin = false;
+          if (user) {
+            try {
+              const idTokenResult = await user.getIdTokenResult(true);
+              claimIsAdmin = idTokenResult.claims?.isAdmin === true;
+            } catch (e) {
+              // クレーム取得失敗時は Firestore 側の isAdmin を使用
+            }
+          }
+
           const serializableUserData = userData ? serializeUserFirestoreData(userData) : null;
+          if (serializableUserData) {
+            serializableUserData.isAdmin = serializableUserData.isAdmin === true || claimIsAdmin;
+          }
 
           const payload: SetUserPayload = {
             user: serializableUser,

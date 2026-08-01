@@ -33,6 +33,7 @@ import { SidebarState } from '@/layouts/MainLayout/Sidebar/AppsLayout';
 import { setImage } from '@/pages/HomePage/FeaturesImages/FeaturesImages';
 import { signOut } from '@/store/reducers/auth';
 import { fetchUserMessageOverview } from '@/store/reducers/messagesSlice';
+import AutoPostControl from '@/components/AutoPostControl';
 import LanguagePicker from '@/components/LanguagePicker';
 
 const ICON_SIZE = 20;
@@ -119,6 +120,7 @@ const HeaderNav = (props: HeaderNavProps) => {
             <IconSearch size={ICON_SIZE} />
           </ActionIcon>
         )}
+        <AutoPostControl />
         <Menu shadow="lg" width={320}>
           <Menu.Target>
             <Indicator

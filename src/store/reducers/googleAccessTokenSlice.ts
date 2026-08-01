@@ -53,9 +53,9 @@ export const linkAndGetGoogleToken = createAsyncThunk<
     }
 
     const provider = new GoogleAuthProvider();
-    // ★★★ Drive スコープは必須 ★★★
+    // Drive スコープは drive.file のみ（非機微＝審査不要・「未確認アプリ」警告なし・100人上限なし）。
+    // Picker はアプリが作成した画像のみ表示される（drive.readonly を外したため）。
     provider.addScope('https://www.googleapis.com/auth/drive.file');
-    provider.addScope('https://www.googleapis.com/auth/drive.readonly');
     // 必要に応じて他のスコープも追加できます
     // provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
     // provider.addScope('https://www.googleapis.com/auth/userinfo.email');

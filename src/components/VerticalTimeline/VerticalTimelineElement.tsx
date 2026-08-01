@@ -146,7 +146,7 @@ const VerticalTimelineElement: FC<VerticalTimelineElementProps> = ({
               <span
                 className={classNames(dateClassName, classes['vertical-timeline-element-date'])}
               >
-                {t('xPosts.scheduledAt')}:{formatDate(date)}
+                {t('common.scheduledAt')}:{formatDate(date)}
               </span>
             </div>
           </>
